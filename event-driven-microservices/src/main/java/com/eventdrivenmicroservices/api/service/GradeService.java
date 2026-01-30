@@ -1,9 +1,11 @@
 package com.eventdrivenmicroservices.api.service;
 
-import ch.qos.logback.core.CoreConstants;
+import com.eventdrivenmicroservices.api.event.GradeSubmittedEvent;
 import com.eventdrivenmicroservices.api.model.Student;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +15,12 @@ public class GradeService {
 
     private final List<Student> students = new ArrayList<>();
     private Long nextId = 1L;
+
+    private String getCurrentTimestamp(){
+        return LocalDateTime.now().format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss" )
+        );
+    }
 
     private final EventPublisher eventPublisher;
 
@@ -48,6 +56,10 @@ public class GradeService {
         return student;
     }
 
+    public List<Student> getAllStudents(){
+        return new ArrayList<>(students);
+    }
+
     public Student getStudentById(Long id){
         return students.stream()
                 .filter(s-> s.getId().equals(id))
@@ -71,24 +83,31 @@ public class GradeService {
                 .collect(Collectors.toList());
     }
 
-    public GradeStatistics gradeStatistics(){
+    public GradeStatistics getStatistics(){
         GradeStatistics stats = new GradeStatistics();
         stats.setTotalStudents(students.size());
         stats.setAverageScore(getAverageScore());
         stats.setTopStudents(getTopStudents().size());
-        stats.SetFailingStudents(getFailingStudents().size());
+        stats.setFailingStudents(getFailingStudents().size());
         stats.setQueueSize(eventPublisher.getQueueSize());
 
         return stats;
     }
 
+    public List<Student> getTopStudents(){
+        return students.stream()
+                .filter(Student::isHonorStudent)
+                .collect(Collectors.toList());
+    }
+
     public List<Student> searchByName(String name){
+        String searchTerm = name.toLowerCase();
         return students.stream()
                 .filter(s-> s.getName().toLowerCase().contains(searchTerm))
                 .collect(Collectors.toList());
     }
 
-    public List<Student> SearchBySubject(String subject){
+    public List<Student> searchBySubject(String subject){
         return students.stream()
                 .filter(s-> s.getSubject().equalsIgnoreCase(subject))
                 .collect(Collectors.toList());
@@ -110,36 +129,33 @@ public class GradeService {
         public int getTotalStudents(){
             return totalStudents;
         }
-        public void setTotalStudents(){
-            this.totalStudents = totalStudents;
-        }
-
         public double getAverageScore(){
             return averageScore;
+        }
+        public int getTopStudents(){
+            return topStudents;
+        }
+        public int getFailingStudents(){
+            return failingStudents;
+        }
+        public int getQueueSize(){
+            return queueSize;
+        }
+
+        public void setTotalStudents(int totalStudents){
+            this.totalStudents = totalStudents;
         }
         public void setAverageScore(double averageScore){
             this.averageScore = averageScore;
         }
-
-        public int getTopStudents(){
-            return topStudents;
-        }
-        public void setTopStudents(){
+        public void setTopStudents(int topStudents){
             this.topStudents = topStudents;
         }
-
-        public int getFailStudents(){
-            return failStudents;
+        public void setFailStudents(int failingStudents){
+            this.failingStudents = failingStudents;
         }
-        public void setFailStudents(){
-            this.failStudents = failStudents;
-        }
-
-        public int getQueueSize(){
-            return queueSize;
-        }
-        public void setQueueSize(){
-            this.failStudents = failStudents;
+        public void setQueueSize(int queueSize){
+            this.queueSize = queueSize;
         }
     }
 
