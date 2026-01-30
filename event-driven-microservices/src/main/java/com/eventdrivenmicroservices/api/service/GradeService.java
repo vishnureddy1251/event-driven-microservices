@@ -100,6 +100,47 @@ public class GradeService {
         System.out.println("All student records deleted");
     }
 
+    public static class GradeStatistics{
+        private int totalStudents;
+        private double averageScore;
+        private int topStudents;
+        private int failStudents;
+        private int queueSize;
 
+        public int getTotalStudents(){
+            return totalStudents;
+        }
+        public void setTotalStudents(){
+            this.totalStudents = totalStudents;
+        }
+
+        public double getAverageScore(){
+            return averageScore;
+        }
+        public void setAverageScore(double averageScore){
+            this.averageScore = averageScore;
+        }
+
+        public int getTopStudents(){
+            return topStudents;
+        }
+        public void setTopStudents(){
+            this.topStudents = topStudents;
+        }
+
+        public int getFailStudents(){
+            return failStudents;
+        }
+        public void setFailStudents(){
+            this.failStudents = failStudents;
+        }
+
+        public int getQueueSize(){
+            return queueSize;
+        }
+        public void setQueueSize(){
+            this.failStudents = failStudents;
+        }
+    }
 
 }
