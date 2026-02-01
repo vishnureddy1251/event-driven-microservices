@@ -3,12 +3,16 @@ import com.eventdrivenmicroservices.api.event.GradeSubmittedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 @Service
 public class EventPublisher {
 
-    private void publishEvent(GradeSubmittedEvent event){
+    private Queue<GradeSubmittedEvent> eventQueue = new LinkedList<>();
+
+    public void publishEvent(GradeSubmittedEvent event){
 
         System.out.println("\n PUBLISHING EVENT");
         System.out.println("Event ID: " + event.getEventId());
@@ -39,14 +43,16 @@ public class EventPublisher {
     }
 
     public GradeSubmittedEvent peekNextEvent(){
-        return peekNextEvent();
+
+        return eventQueue.peek();
     }
 
     public int getQueueSize(){
+
         return eventQueue.size();
     }
 
-    public List<GradeSubmittedEvent> getAllEvents{
+    public List<GradeSubmittedEvent> getAllEvents(){
         return new ArrayList<>(eventQueue);
     }
 
@@ -57,6 +63,7 @@ public class EventPublisher {
     }
 
     public boolean isQueueEmpty(){
+
         return eventQueue.isEmpty();
     }
 

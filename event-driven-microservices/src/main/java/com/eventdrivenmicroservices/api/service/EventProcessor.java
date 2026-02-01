@@ -82,6 +82,7 @@ public class EventProcessor {
     }
 
     public int getTotalProcessed() {
+
         return totalProcessed;
     }
 

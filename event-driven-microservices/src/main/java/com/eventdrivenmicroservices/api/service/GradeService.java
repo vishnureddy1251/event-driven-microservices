@@ -16,12 +16,6 @@ public class GradeService {
     private final List<Student> students = new ArrayList<>();
     private Long nextId = 1L;
 
-    private String getCurrentTimestamp(){
-        return LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss" )
-        );
-    }
-
     private final EventPublisher eventPublisher;
 
     public GradeService(EventPublisher eventPublisher){
@@ -77,6 +71,12 @@ public class GradeService {
                 .orElse(0.0);
     }
 
+    public List<Student> getTopStudents(){
+        return students.stream()
+                .filter(Student::isHonorStudent)
+                .collect(Collectors.toList());
+    }
+
     public List<Student> getFailingStudents(){
         return students.stream()
                 .filter(s-> s.getGrade().equals("F"))
@@ -92,12 +92,6 @@ public class GradeService {
         stats.setQueueSize(eventPublisher.getQueueSize());
 
         return stats;
-    }
-
-    public List<Student> getTopStudents(){
-        return students.stream()
-                .filter(Student::isHonorStudent)
-                .collect(Collectors.toList());
     }
 
     public List<Student> searchByName(String name){
@@ -119,11 +113,17 @@ public class GradeService {
         System.out.println("All student records deleted");
     }
 
+    private String getCurrentTimestamp(){
+        return LocalDateTime.now().format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss" )
+        );
+    }
+
     public static class GradeStatistics{
         private int totalStudents;
         private double averageScore;
         private int topStudents;
-        private int failStudents;
+        private int failingStudents;
         private int queueSize;
 
         public int getTotalStudents(){
@@ -151,7 +151,7 @@ public class GradeService {
         public void setTopStudents(int topStudents){
             this.topStudents = topStudents;
         }
-        public void setFailStudents(int failingStudents){
+        public void setFailingStudents(int failingStudents){
             this.failingStudents = failingStudents;
         }
         public void setQueueSize(int queueSize){
