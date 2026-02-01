@@ -2,6 +2,9 @@ package com.eventdrivenmicroservices.api.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EventPublisher {
 
@@ -33,5 +36,39 @@ public class EventPublisher {
         System.out.println(" Remaining in Queue:" + eventQueue.size());
 
         return event;
+    }
+
+    public GradeSubmittedEvent peekNextEvent(){
+        return peekNextEvent();
+    }
+
+    public int getQueueSize(){
+        return eventQueue.size();
+    }
+
+    public List<GradeSubmittedEvent> getAllEvents{
+        return new ArrayList<>(eventQueue);
+    }
+
+    public void clearQueue(){
+        int size = eventQueue.size();
+        eventQueue.clear();
+        System.out.println("Queue cleared! Removed " + size + "events.");
+    }
+
+    public boolean isQueueEmpty(){
+        return eventQueue.isEmpty();
+    }
+
+    public String getQueueStats(){
+        return String.format("""
+            📊 QUEUE STATISTICS
+            ═══════════════════
+            Total Events: %d
+            Status: %s
+            """,
+                eventQueue.size(),
+                eventQueue.isEmpty() ? "Empty" : "Has Events"
+        );
     }
 }
