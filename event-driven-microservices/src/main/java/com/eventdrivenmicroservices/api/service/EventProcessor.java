@@ -1,5 +1,5 @@
 package com.eventdrivenmicroservices.api.service;
-
+import com.eventdrivenmicroservices.api.event.GradeSubmittedEvent;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -71,5 +71,33 @@ public class EventProcessor {
             default:
                 System.out.println("Sending grade notification");
         }
+    }
+
+    private void simulateProcessingDelay() {
+        try {
+            Thread.sleep(100);  // Sleep for 100 milliseconds
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public int getTotalProcessed() {
+        return totalProcessed;
+    }
+
+    public void resetStatistics() {
+        totalProcessed = 0;
+        System.out.println(" Statistics reset");
+    }
+
+    public String getProcessorStatus() {
+        return String.format("""
+            EVENT PROCESSOR STATUS
+            ═════════════════════════
+            Total Processed: %d events
+            Status: Ready
+            """,
+                totalProcessed
+        );
     }
 }

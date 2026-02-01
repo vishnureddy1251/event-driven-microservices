@@ -1,5 +1,5 @@
 package com.eventdrivenmicroservices.api.service;
-
+import com.eventdrivenmicroservices.api.event.GradeSubmittedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class EventPublisher {
 
     public String getQueueStats(){
         return String.format("""
-            📊 QUEUE STATISTICS
+            QUEUE STATISTICS
             ═══════════════════
             Total Events: %d
             Status: %s
