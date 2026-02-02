@@ -105,4 +105,41 @@ public class GradeController {
         response.put("message", processed + " event(s) processed");
         return response;
     }
+
+    @GetMapping("queue")
+    public Map<String, Object> getQueueStatus(){
+        Map<String, Object> status =  new HashMap<>();
+        status.put("queueSize", eventPublisher.getQueueSize());
+        status.put("isEmpty", eventPublisher.isQueueEmpty());
+        return status;
+    }
+
+    @GetMapping("/search")
+    public List<Student> searchStudents(@RequestParam String name){
+        return gradeService.searchByName(name);
+    }
+
+    @GetMapping("/top")
+    public List<Student> getTopStudent(){
+        return gradeService.getTopStudents();
+    }
+
+    @GetMapping("/failing")
+    public List<Student> getFailingStudents(){
+        return gradeService.getFailingStudents();
+    }
+
+    @GetMapping("/events")
+    public List<GradeSubmittedEvent> getAllEvents(){
+        return eventPublisher.getAllEvents();
+    }
+
+    @DeleteMapping("/queue")
+    public Map<String, String> clearQueue(){
+        eventPublisher.clearQueue();
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "queue cleared");
+        return response;
+    }
 }
