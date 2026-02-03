@@ -1,7 +1,11 @@
 # event-driven architecture
 
-A hands-on learning project demonstrating **event-driven architecture** using
-Spring Boot, AWS Lambda, queues (SQS), Docker, and GitHub Actions.
+Student Grading System (Event-Driven)
+
+This project is a hands-on learning implementation of an event-driven architecture for managing student grades.
+It demonstrates how modern backend systems decouple user requests from processing logic using queues and serverless computing.
+
+The system is built using Spring Boot, AWS SQS, AWS Lambda, Docker, and GitHub Actions.
 
 ---
 
