@@ -16,10 +16,10 @@ public class GradeService {
     private final List<Student> students = new ArrayList<>();
     private Long nextId = 1L;
 
-    private final EventPublisher eventPublisher;
+    private final SqsEventPublisher sqsEventPublisher;
 
-    public GradeService(EventPublisher eventPublisher){
-        this.eventPublisher = eventPublisher;
+    public GradeService(SqsEventPublisher sqsEventPublisher){
+        this.sqsEventPublisher = sqsEventPublisher;
 
     }
 
@@ -45,7 +45,7 @@ public class GradeService {
                 getCurrentTimestamp()
         );
 
-        eventPublisher.publishEvent(event);
+        sqsEventPublisher.publishEvent(event);
 
         return student;
     }
@@ -89,7 +89,7 @@ public class GradeService {
         stats.setAverageScore(getAverageScore());
         stats.setTopStudents(getTopStudents().size());
         stats.setFailingStudents(getFailingStudents().size());
-        stats.setQueueSize(eventPublisher.getQueueSize());
+        stats.setQueueSize(0);
 
         return stats;
     }
