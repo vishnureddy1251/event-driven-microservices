@@ -5,6 +5,7 @@ import com.eventdrivenmicroservices.api.model.Student;
 import com.eventdrivenmicroservices.api.service.EventProcessor;
 import com.eventdrivenmicroservices.api.service.EventPublisher;
 import com.eventdrivenmicroservices.api.service.GradeService;
+import com.eventdrivenmicroservices.api.service.SqsEventProcessor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,13 +19,16 @@ public class GradeController {
     private final GradeService gradeService;
     private final EventPublisher eventPublisher;
     private final EventProcessor eventProcessor;
+    private final SqsEventProcessor sqsEventProcessor;
 
     public GradeController(GradeService gradeService,
                            EventPublisher eventPublisher,
-                           EventProcessor eventProcessor){
+                           EventProcessor eventProcessor,
+                           SqsEventProcessor sqsEventProcessor){
         this.gradeService = gradeService;
         this.eventPublisher = eventPublisher;
         this.eventProcessor = eventProcessor;
+        this.sqsEventProcessor = sqsEventProcessor;
 
     }
 
@@ -90,19 +94,15 @@ public class GradeController {
     }
 
     @PostMapping("/process-all")
-    public Map<String, Object> processAllEvents(){
+    public Map<String, Object> processAllEvents() {
         Map<String, Object> response = new HashMap<>();
-        int processed = 0;
 
-        GradeSubmittedEvent event;
-        while ((event = eventPublisher.getNextEvent()) !=null){
-            eventProcessor.processEvent(event);
-            processed++;
-        }
+        // Process messages from SQS
+        int processed = sqsEventProcessor.processMessages();
 
         response.put("status", "success");
         response.put("eventsProcessed", processed);
-        response.put("message", processed + " event(s) processed");
+        response.put("message", processed + " event(s) processed from SQS");
         return response;
     }
 
