@@ -13,20 +13,24 @@ import java.net.URI;
 @Configuration
 public class AwsConfig {
 
-    @Value("{aws.endpoint}")
+    @Value("${aws.endpoint:http://localhost:4566}")
     private String awsEndpoint;
 
-    @Value("{aws.region}")
+    @Value("${aws.region:us-east-1}")
     private String awsRegion;
 
-    @Value("${aws.access-key-id}")
+    @Value("${aws.access-key-id:test}")
     private String accessKeyId;
 
-    @Value("${aws.secret-access-key}")
+    @Value("${aws.secret-access-key:test}")
     private String secretAccessKey;
 
     @Bean
-    public SqsClient sqsClient(){
+    public SqsClient sqsClient() {
+        System.out.println("🔧 Creating SQS Client");
+        System.out.println("   Endpoint: " + awsEndpoint);
+        System.out.println("   Region: " + awsRegion);
+
         return SqsClient.builder()
                 .endpointOverride(URI.create(awsEndpoint))
                 .region(Region.of(awsRegion))
