@@ -9,6 +9,7 @@ public class GradeSubmittedEvent {
     private String timestamp;
     private String eventId;
     private String eventType;
+    private boolean highScore;
 
     public GradeSubmittedEvent() {
         this.eventType = "GRADE_SUBMITTED";
@@ -24,6 +25,7 @@ public class GradeSubmittedEvent {
         this.timestamp = timestamp;
         this.eventType = "GRADE_SUBMITTED";
         this.eventId = generateEventId();
+        this.highScore = isHighScore();
     }
 
     private String generateEventId() {
@@ -59,6 +61,10 @@ public class GradeSubmittedEvent {
         return eventType;
     }
 
+    public boolean getHighScore(){
+        return highScore;
+    }
+
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
@@ -85,6 +91,10 @@ public class GradeSubmittedEvent {
 
     public void setEventType(String eventType) {
         this.eventType = eventType;
+    }
+
+    public void setHighScore(boolean highScore){
+        this.highScore = highScore;
     }
 
     @Override
