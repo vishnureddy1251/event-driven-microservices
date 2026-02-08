@@ -3,6 +3,7 @@ package com.eventdrivenmicroservices.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 📚 STUDENT ENTITY
@@ -65,46 +66,78 @@ public class Student {
         };
     }
 
-
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSubject() {
         return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
 
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-        this.grade = calculateGrade(score);
-    }
-
     public String getGrade() {
         return grade;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        this.grade = calculateGrade(score);
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void setGrade(String grade) {
         this.grade = grade;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
