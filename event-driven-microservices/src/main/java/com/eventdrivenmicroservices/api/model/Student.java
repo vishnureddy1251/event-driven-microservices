@@ -1,24 +1,32 @@
 package com.eventdrivenmicroservices.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.time.LocalDateTime;
+
 /**
  * 📚 STUDENT ENTITY
  * @author Vishnu
  * @version 1.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Student {
-
     private Long id;
     private String name;
     private String subject;
     private int score;
     private String grade;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Student(){
-
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Student(Long id, String name, String subject, int score){
+        this();
         this.id = id;
         this.name = name;
         this.subject = subject;
@@ -32,6 +40,10 @@ public class Student {
         if (score >= 70) return "C";
         if (score >= 60) return "D";
         return "F";
+    }
+
+    public boolean isPassing(){
+        return score >= 60;
     }
 
 
@@ -87,9 +99,7 @@ public class Student {
                 '}';
     }
 
-    public boolean isPassing(){
-        return !grade.equals("F");
-    }
+
 
     public boolean isHonorStudent(){
         return grade.equals("A") || grade.equals("B");
