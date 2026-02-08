@@ -46,6 +46,25 @@ public class Student {
         return score >= 60;
     }
 
+    public boolean isHonorStudent(){
+        return score >=80;
+    }
+
+    public boolean needsAttention() {
+        return score < 70;
+    }
+
+    public String getPerformanceLevel() {
+        return switch (grade) {
+            case "A" -> "Excellent";
+            case "B" -> "Good";
+            case "C" -> "Average";
+            case "D" -> "Below Average";
+            case "F" -> "Failing";
+            default -> "Unknown";
+        };
+    }
+
 
     public Long getId() {
         return id;
@@ -98,12 +117,5 @@ public class Student {
                 ", grade='" + grade + '\'' +
                 '}';
     }
-
-
-
-    public boolean isHonorStudent(){
-        return grade.equals("A") || grade.equals("B");
-    }
-
 
 }
